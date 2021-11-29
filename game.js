@@ -16,9 +16,8 @@ const ENEMY_SPEED = 20
 
 //Game logic
 let isJumping = true
-loadRoot('https://i.imgur.com/')
-loadSprite('ground', 'gkvIc0a.png')
-loadSprite('bot', 'LsfXnsu.png')
+loadSprite('ground', 'sprites/ground-dead.png')
+loadSprite('bot', 'sprites/bot2.png')
 
 
 
