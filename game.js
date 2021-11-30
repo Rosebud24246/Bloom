@@ -160,6 +160,7 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
   keyPress('space', () => {
     playAudio();
   })
+  document.getElementById("music").volume = 0.5;
 });
 
 
@@ -169,6 +170,7 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
 scene('lose', () => {
   add([text("You Lose...")])
   music.pause();
+  document.getElementById("music").currentTime = 0;
 
   //restart button
   addButton("Restart", vec2(500, 200), () => go("game"));
