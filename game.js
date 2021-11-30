@@ -213,10 +213,6 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
     });
   }
 
-  onUpdate(() => {
-    debug.log(topNum + " " + bottomNum);
-  });
-
   loop(1, () => {
     MOVE_SPEED -= 5;
   });
@@ -233,7 +229,7 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
   let damage = document.getElementById("damage");
   document.getElementById("music").loop = true;
   function playAudio() {
-    //music.play();
+    music.play();
   }
   function playDamage() {
     damage.play();
@@ -277,7 +273,7 @@ scene('start', () => {
 		pos(center().add(0, 100)),
 		scale(3),
 		origin("center")
-
+  ]);
   addButton("Start", vec2(500, 200), () => go("game"));
 
 })
