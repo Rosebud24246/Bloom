@@ -153,7 +153,7 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
   * Adding controls for audio
   */
   let music = document.getElementById("music");
-  let damage = document.getElementById("Damage");
+  let damage = document.getElementById("damage");
   document.getElementById("music").loop = true;
   function playAudio() {
     music.play();
@@ -166,6 +166,7 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
     playAudio();
   })
   document.getElementById("music").volume = 0.5;
+  document.getElementById("damage").volume = 0.8;
 });
 
 
