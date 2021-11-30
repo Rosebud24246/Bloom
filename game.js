@@ -9,12 +9,15 @@ kaboom({
 });
 
 // Speed identifiers
-const MOVE_SPEED = 200;
+var MOVE_SPEED = -250;
 const JUMP_FORCE = 700;
 const BIG_JUMP_FORCE = 2000;
 let CURRENT_JUMP_FORCE = JUMP_FORCE;
 const FALL_DEATH = 400;
 const ENEMY_SPEED = 20;
+const WIN_TIME = 120;
+const WIDTH = 1000;
+const HEIGHT = 600;
 
 //Game logic
 loadSprite('ground', 'sprites/ground-dead.png');
@@ -60,6 +63,8 @@ loadSprite('enemy', 'sprites/enemy.jpeg');
 
 //Game Layout
 scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
+  MOVE_SPEED = -250;
+
   const MAPS = [
     [
       '$                                      ',
@@ -112,7 +117,7 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
     if (player.hp() <= 0) {
       go('lose');
     }
-})
+  })
 
   gravity(2000);
 
@@ -123,8 +128,55 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
   });
 
   /**
+   * Condition for win
+   */
+
+  var value = 0;
+  var progressBarLength = 500;
+  var outlineWidth = 7;
+
+  onDraw(() => {
+    //progressBar Outline
+    drawRect({
+      pos: vec2((WIDTH/2) - (progressBarLength/2) - outlineWidth/2, 50),
+      height: 25 + outlineWidth,
+      width: progressBarLength + outlineWidth,
+      layer: 'ui',
+      origin: "left",
+      color: WHITE,
+      radius: 20,
+      outline: { color: BLACK, width: outlineWidth }
+    });
+    //progressBar
+    drawRect({
+      pos: vec2((WIDTH/2) - (progressBarLength/2), 50),
+      height: 25,
+      width: lerp(0, progressBarLength, value/WIN_TIME),
+      layer: 'ui',
+      origin: "left",
+      radius: 20,
+      color: rgb(50, 226, 108)
+    });
+  });
+
+  onUpdate(() => {
+    if (value/WIN_TIME > 1) {
+      go('win');
+    }
+  });
+
+  wait(0.02, () => {
+    loop(0.021, () => {
+      value += 0.02;
+      value = Math.round(value*100)/100;
+    });
+  });
+
+  /**
    * Enemy control
    */
+  var topNum = 3;
+  var bottomNum = 1;
 
   function addObsticle() {
     const enemy = add([
@@ -135,18 +187,43 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
       body(),
       scale(0.5),
       origin('center'),
+      cleanup(3),
       "enemy",
     ]);
 
     enemy.action(() => {
-      enemy.move(-250, 0);
+      enemy.move(MOVE_SPEED, 0);
     });
   }
 
-  wait(3, () => {
-    loop(1.5, () => {
+  function topDown() {
+    topNum = 3 - ((value/WIN_TIME)*1.5);
+    return topNum;
+  }
+
+  function bottomDown() {
+    bottomNum = 1 - ((value/WIN_TIME)*0.5);
+    return bottomNum;
+  }
+
+  function randSpawn(num) {
+    wait(num, () => {
       addObsticle();
+      randSpawn(rand(bottomDown(), topDown()));
     });
+  }
+
+  onUpdate(() => {
+    debug.log(topNum + " " + bottomNum);
+  });
+
+  loop(1, () => {
+    MOVE_SPEED -= 5;
+  });
+
+  wait(3, () => {
+    addObsticle();
+    randSpawn(rand(1, 3));
   });
 
   /**
@@ -156,7 +233,7 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
   let damage = document.getElementById("damage");
   document.getElementById("music").loop = true;
   function playAudio() {
-    music.play();
+    //music.play();
   }
   function playDamage() {
     damage.play();
@@ -174,6 +251,7 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
   * Lose or Game over end screen
   */
 scene('lose', () => {
+  MOVE_SPEED = -250;
   add([text("You Lose...")])
   music.pause();
   document.getElementById("music").currentTime = 0;
@@ -182,15 +260,23 @@ scene('lose', () => {
   addButton("Restart", vec2(500, 200), () => go("game"));
 });
 
+scene('win', () => {
+  MOVE_SPEED = -250;
+  add([text("YOU WIN!!!")])
+  music.pause();
+
+  //restart button
+  addButton("Restart", vec2(500, 200), () => go("game"));
+});
+
 //start screen
 scene('start', () => {
-
-  add([
-    text("B100M"),
-    pos(center().add(0, 100)),
-    scale(3),
-    origin("center"),
-  ])
+  MOVE_SPEED = -250;
+	add([
+		text("B100M"),
+		pos(center().add(0, 100)),
+		scale(3),
+		origin("center")
 
   addButton("Start", vec2(500, 200), () => go("game"));
 
