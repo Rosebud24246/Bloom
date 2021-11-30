@@ -22,17 +22,53 @@ loadSprite('bot', 'sprites/bot2.png');
 loadSprite('enemy', 'sprites/enemy.jpeg');
 
 
+/**
+  * button function
+  * @param txt text of button
+  * @param p position
+  * @param f event
+  */
+ function addButton(txt, p, f) {
 
+	const btn = add([
+		text(txt),
+		pos(p),
+		area({ cursor: "pointer", }),
+		scale(1),
+		origin("center"),
+	])
+
+	btn.onClick(f)
+  btn.onUpdate(() => {
+		if (btn.isHovering()) {
+			const t = time() * 10
+			btn.color = rgb(
+				wave(0, 255, t),
+				wave(0, 255, t + 2),
+				wave(0, 255, t + 4),
+			)
+			btn.scale = vec2(1.2)
+		} else {
+			btn.scale = vec2(1)
+			btn.color = rgb()
+		}
+	})
+
+  btn.scale = vec2(1)
+	btn.color = rgb()
+}
+
+//Game Layout
 scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
   const MAPS = [
     [
-      '                                      ',
+      '$                                      ',
       '                                      ',
       '                                      ',
       '======================================',
     ],
   ];
-  
+
   const levelCfg = {
     width: 64,
     height: 64,
@@ -49,6 +85,7 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
 
 
   const player = add([
+    health(3),
     sprite('bot'),
     solid(),
     area(),
@@ -62,10 +99,19 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
       go('lose');
     }
   });
-  
+
   player.onCollide("enemy", (enemy) => {
-    go('lose');
+    player.hurt(1)
+    destroy(enemy);
+    shake(5)
   });
+
+  //trigger when hp hits 0
+  player.on("death", () => {
+    if (player.hp() <= 0) {
+      go('lose');
+    }
+})
 
   gravity(2000);
 
@@ -99,24 +145,50 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
   wait(3, () => {
     loop(1.5, () => {
       addObsticle();
-    }); 
+    });
   });
 
   /**
-  * Adding controls for audio 
+  * Adding controls for audio
   */
   let music = document.getElementById("music");
   document.getElementById("music").loop = true;
   function playAudio() {
-    //music.play();
+    music.play();
   }
-  keyPress('right', () => {
+
+  keyPress('space', () => {
     playAudio();
   })
 });
 
+
+ /**
+  * Lose or Game over end screen
+  */
 scene('lose', () => {
   add([text("You Lose...")])
+  music.pause();
+
+  //restart button
+  addButton("Restart", vec2(500, 200), () => go("game"));
 });
 
-go("game");
+//start screen
+scene('start', () => {
+
+	add([
+		text("B100M"),
+		pos(center().add(0, 100)),
+		scale(3),
+		origin("center"),
+	])
+
+  addButton("Start", vec2(500, 200), () => go("game"));
+
+})
+
+go('start');
+
+//go("game");
+onUpdate(() => cursor("default"))
