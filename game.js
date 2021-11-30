@@ -159,7 +159,7 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
     music.play();
   }
   function playDamage() {
-    damge.play();
+    damage.play();
   }
 
   keyPress('space', () => {
