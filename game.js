@@ -33,32 +33,32 @@ loadSprite('enemy', 'sprites/enemy.jpeg');
   */
  function addButton(txt, p, f) {
 
-	const btn = add([
-		text(txt),
-		pos(p),
-		area({ cursor: "pointer", }),
-		scale(1),
-		origin("center"),
-	])
+  const btn = add([
+    text(txt),
+    pos(p),
+    area({ cursor: "pointer", }),
+    scale(1),
+    origin("center"),
+  ])
 
-	btn.onClick(f)
+  btn.onClick(f)
   btn.onUpdate(() => {
-		if (btn.isHovering()) {
-			const t = time() * 10
-			btn.color = rgb(
-				wave(0, 255, t),
-				wave(0, 255, t + 2),
-				wave(0, 255, t + 4),
-			)
-			btn.scale = vec2(1.2)
-		} else {
-			btn.scale = vec2(1)
-			btn.color = rgb()
-		}
-	})
+    if (btn.isHovering()) {
+      const t = time() * 10
+      btn.color = rgb(
+        wave(0, 255, t),
+        wave(0, 255, t + 2),
+        wave(0, 255, t + 4),
+      )
+      btn.scale = vec2(1.2)
+    } else {
+      btn.scale = vec2(1)
+      btn.color = rgb()
+    }
+  })
 
   btn.scale = vec2(1)
-	btn.color = rgb()
+  btn.color = rgb()
 }
 
 //Game Layout
@@ -109,6 +109,7 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
     player.hurt(1)
     destroy(enemy);
     shake(5)
+    playDamage();
   });
 
   //trigger when hp hits 0
@@ -229,14 +230,20 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
   * Adding controls for audio
   */
   let music = document.getElementById("music");
+  let damage = document.getElementById("damage");
   document.getElementById("music").loop = true;
   function playAudio() {
     //music.play();
+  }
+  function playDamage() {
+    damage.play();
   }
 
   keyPress('space', () => {
     playAudio();
   })
+  document.getElementById("music").volume = 0.5;
+  document.getElementById("damage").volume = 0.8;
 });
 
 
@@ -247,6 +254,7 @@ scene('lose', () => {
   MOVE_SPEED = -250;
   add([text("You Lose...")])
   music.pause();
+  document.getElementById("music").currentTime = 0;
 
   //restart button
   addButton("Restart", vec2(500, 200), () => go("game"));
@@ -268,8 +276,7 @@ scene('start', () => {
 		text("B100M"),
 		pos(center().add(0, 100)),
 		scale(3),
-		origin("center"),
-	])
+		origin("center")
 
   addButton("Start", vec2(500, 200), () => go("game"));
 
