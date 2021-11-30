@@ -104,6 +104,7 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
     player.hurt(1)
     destroy(enemy);
     shake(5)
+    playDamage();
   });
 
   //trigger when hp hits 0
@@ -152,9 +153,13 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
   * Adding controls for audio
   */
   let music = document.getElementById("music");
+  let damage = document.getElementById("Damage");
   document.getElementById("music").loop = true;
   function playAudio() {
     music.play();
+  }
+  function playDamage() {
+    damge.play();
   }
 
   keyPress('space', () => {
