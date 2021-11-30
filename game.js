@@ -1,22 +1,14 @@
 kaboom({
     global:true,
-    fullscreen: true,
     fullscreen: false,
     scale: 1,
     width: 1000,
     height: 600,
     debug: true,
     clearColor: [0, 0, 0, 1],
-})
 });
 
 // Speed identifiers
-const MOVE_SPEED = 120
-const JUMP_FORCE = 360
-const BIG_JUMP_FORCE = 550
-let CURRENT_JUMP_FORCE = JUMP_FORCE
-const FALL_DEATH = 400
-const ENEMY_SPEED = 20
 const MOVE_SPEED = 200;
 const JUMP_FORCE = 700;
 const BIG_JUMP_FORCE = 2000;
@@ -34,7 +26,10 @@ loadSprite('enemy', 'sprites/enemy.jpeg');
   * button function
   * @param txt text of button
   * @param p position
+  * @param f event
+  */
  function addButton(txt, p, f) {
+
   const btn = add([
     text(txt),
     pos(p),
@@ -67,11 +62,10 @@ loadSprite('enemy', 'sprites/enemy.jpeg');
 scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
   const MAPS = [
     [
-      '                                                                                ',
-      '                                                                                ',
-      '                                                                                ',
-      '                                                                                ',
-      '================================================================================',
+      '$                                      ',
+      '                                      ',
+      '                                      ',
+      '======================================',
     ],
   ];
 
@@ -81,6 +75,8 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
     pos: vec2(0, 200),
     '=': () => [sprite('ground'),
       area(),
+      solid()],
+  };
 
   layers(['bg', 'obj', 'ui'], 'obj');
 
@@ -89,8 +85,11 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
 
 
   const player = add([
+    health(3),
     sprite('bot'),
     solid(),
+    area(),
+    pos(200, 392),
     body(),
     origin('bot')
   ]);
@@ -99,16 +98,11 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
     if (player.pos.y >= 1000) {
       go('lose');
     }
-  })
-  keyDown('left', () => {
+  });
 
-  keyDown('right', () => {
-    player.move(MOVE_SPEED, 0)
-  })
-
-  player.action(() => {
-    if(player.grounded()) {
-      isJumping = false
+  player.onCollide("enemy", (enemy) => {
+    player.hurt(1)
+    destroy(enemy);
     shake(5)
   });
 
@@ -120,13 +114,16 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
 })
 
   gravity(2000);
+
   keyDown('space', () => {
     if (player.grounded()) {
-      isJumping = true
       player.jump(CURRENT_JUMP_FORCE);
     }
+  });
+
   /**
    * Enemy control
+   */
 
   function addObsticle() {
     const enemy = add([
@@ -163,11 +160,11 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
   keyPress('space', () => {
     playAudio();
   })
-})
 });
 
 
  /**
+  * Lose or Game over end screen
   */
 scene('lose', () => {
   add([text("You Lose...")])
