@@ -105,8 +105,19 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
     }
   });
 
+  //Health bar
+  const healthBar = add([
+    text("Health: 3"),
+    pos(40,100),
+    scale(0.5),
+    { value: 3}
+
+
+  ])
   player.onCollide("enemy", (enemy) => {
     player.hurt(1)
+    healthBar.value -= 1
+    healthBar.text = "Health: " + healthBar.value
     destroy(enemy);
     shake(5)
     playDamage();
