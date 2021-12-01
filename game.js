@@ -238,12 +238,16 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
   */
   let music = document.getElementById("music");
   let damage = document.getElementById("damage");
+  let victor = document.getElementById("victor");
   document.getElementById("music").loop = true;
   function playAudio() {
     music.play();
   }
   function playDamage() {
     damage.play();
+  }
+  function playVictor() {
+    victor.play();
   }
 
   keyPress('space', () => {
@@ -271,6 +275,7 @@ scene('win', () => {
   MOVE_SPEED = -250;
   add([text("YOU WIN!!!")])
   music.pause();
+  //victor.play();
 
   //restart button
   addButton("Restart", vec2(500, 200), () => go("game"));
