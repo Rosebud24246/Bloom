@@ -63,6 +63,7 @@ loadSprite('enemy', 'sprites/enemy.jpeg');
 
 //Game Layout
 scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
+  var timeStart = time();
   MOVE_SPEED = -250;
 
   const MAPS = [
@@ -142,7 +143,8 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
    * Condition for win
    */
 
-  var value = 0;
+
+  var value = time() - timeStart;
   var progressBarLength = 500;
   var outlineWidth = 7;
 
@@ -171,16 +173,11 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
   });
 
   onUpdate(() => {
+    value = time() - timeStart;
+    debug.log(value);
     if (value/WIN_TIME > 1) {
       go('win');
     }
-  });
-
-  wait(0.02, () => {
-    loop(0.021, () => {
-      value += 0.02;
-      value = Math.round(value*100)/100;
-    });
   });
 
   /**
