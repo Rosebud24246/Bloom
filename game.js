@@ -255,6 +255,8 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
   })
   document.getElementById("music").volume = 0.5;
   document.getElementById("damage").volume = 0.8;
+  victor.pause();
+  document.getElementById("victor").currentTime = 0;
 });
 
 
@@ -275,7 +277,8 @@ scene('win', () => {
   MOVE_SPEED = -250;
   add([text("YOU WIN!!!")])
   music.pause();
-  //victor.play();
+  document.getElementById("music").currentTime = 0;
+  victor.play();
 
   //restart button
   addButton("Restart", vec2(500, 200), () => go("game"));
