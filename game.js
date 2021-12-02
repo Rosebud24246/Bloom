@@ -240,6 +240,7 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
   let damage = document.getElementById("damage");
   let victor = document.getElementById("victor");
   document.getElementById("music").loop = true;
+  document.getElementById("victor").loop = true;
   function playAudio() {
     music.play();
   }
@@ -255,6 +256,7 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
   })
   document.getElementById("music").volume = 0.5;
   document.getElementById("damage").volume = 0.8;
+  document.getElementById("victor").volume = 0.5;
   victor.pause();
   document.getElementById("victor").currentTime = 0;
 });
