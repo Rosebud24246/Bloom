@@ -248,9 +248,8 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
     victor.play();
   }
 
-  keyPress('space', () => {
-    playAudio();
-  })
+  playAudio();
+  
   document.getElementById("music").volume = 0.5;
   document.getElementById("damage").volume = 0.8;
   document.getElementById("victor").volume = 0.5;
