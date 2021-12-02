@@ -290,9 +290,14 @@ scene('start', () => {
 		scale(3),
 		origin("center")
   ]);
-  addButton("Start", vec2(500, 200), () => go("game"));
+  addButton("Start", vec2(500, 200), () => startButton());
 
 })
+
+function startButton() {
+  go("start");
+  music.play();
+}
 
 go('start');
 
