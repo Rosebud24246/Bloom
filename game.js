@@ -250,9 +250,9 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
     victor.play();
   }
 
-  keyPress('space', () => {
-    playAudio();
-  })
+  //keyPress('space', () => {
+  //  playAudio();
+  //})
   document.getElementById("music").volume = 0.5;
   document.getElementById("damage").volume = 0.8;
 });
