@@ -3,13 +3,22 @@
         <meta charset="utf-8">
         <title>Bloom Kaboom.js</title>
         <style>
+            body {
+                position: relative;
+                background-image: radial-gradient(circle, rgb(41, 233, 73), rgb(2, 170, 2));
+            }
             canvas {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
                 padding-left: 0;
                 padding-right: 0;
-                margin-left: auto;
-                margin-right: auto;
-                margin-top: 15%;
-                display: block;
+                margin: auto;
+                border-style: solid;
+                border-width: 10px;
+                /*display: flex;
+                align-items: center;*/
             }
         </style>
     </head>

@@ -237,7 +237,7 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
   let damage = document.getElementById("damage");
   let victor = document.getElementById("victor");
   document.getElementById("music").loop = true;
-  document.getElementById("victor").loop = true;
+  document.getElementById("victor").loop = false;
   function playAudio() {
     music.play();
   }
