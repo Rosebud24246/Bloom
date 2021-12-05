@@ -20,8 +20,6 @@ let isJumping = true
 loadSprite('ground', 'sprites/ground-dead.png')
 loadSprite('bot', 'sprites/bot2.png')
 
-
-
 scene("game", ({ level, score }) => {
   layers(['bg', 'obj', 'ui'], 'obj')
 
