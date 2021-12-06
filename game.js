@@ -110,7 +110,7 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
     move(LEFT, 10),
   ])
   
-  loop(3, () =>{
+  loop(5, () =>{
     add([
       layer('bg2'),
       sprite('layer3'),
