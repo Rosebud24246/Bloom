@@ -106,7 +106,7 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
     pos(500,600),
     origin('bot'),
   ]);
-  
+
   loop(3, () =>{
     add([
       layer('bg2'),
@@ -116,7 +116,7 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
       move(LEFT, 100)
     ])
   })
-  
+
   add([
     layer('bg3'),
     sprite('layer4'),
@@ -167,11 +167,24 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
 
   gravity(2000);
 
+  //space for jump
   keyDown('space', () => {
     if (player.grounded()) {
       player.jump(CURRENT_JUMP_FORCE);
     }
   });
+
+  //pause button ('esc')
+  keyDown('escape', () => {
+    debug.paused = true;
+    music.pause();
+    });
+
+    //unpause button ('space')
+    keyDown('space', () => {
+      debug.paused = false;
+      music.play();
+    });
 
   /**
    * Condition for win
@@ -283,7 +296,7 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
   }
 
   music.play();
-  
+
   document.getElementById("music").volume = 0.5;
   document.getElementById("damage").volume = 0.8;
   document.getElementById("victor").volume = 0.5;
