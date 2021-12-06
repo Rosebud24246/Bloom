@@ -69,6 +69,8 @@ loadSprite('layer5', 'sprites/ground.png')
 //Game Layout
 scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
   var timeStart = time();
+  var isPaused = false;
+  var pauseOffset = 0;
   MOVE_SPEED = -250;
 
   const MAPS = [
@@ -186,16 +188,23 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
   });
 
   //pause key
-    keyDown('escape', () => {
-    debug.paused = true;
-    music.pause();
+  keyPress('escape', () => {
+    if (isPaused == false) {
+      isPaused = true;
+      debug.paused = true;
+      pauseOffset = time();
+      music.pause();
+    } else {
+      isPaused = false;
+      debug.paused = false;
+      timeStart += time() - pauseOffset;
+      music.play();
+    }
   });
 
   //unpause key
   keyDown('space', () => {
-    debug.paused = false;
-    music.play();
-    time() == time() - time().paused;
+    
   });
 
   /**
@@ -232,8 +241,11 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
   });
 
   onUpdate(() => {
-    value = time() - timeStart;
-    debug.log(value);
+    if (isPaused == false) {
+      value = time() - timeStart;
+    }
+    //console.log(timeStart);
+    //debug.log(value + " " + time());
     if (value/WIN_TIME > 1) {
       go('win');
     }
