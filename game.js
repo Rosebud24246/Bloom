@@ -114,7 +114,7 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
     add([
       layer('bg2'),
       sprite('layer3'),
-      pos(500,600),
+      pos(2000,600),
       origin('bot'),
       move(LEFT, 100),
     ])
