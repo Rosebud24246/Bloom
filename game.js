@@ -10,7 +10,7 @@ kaboom({
 
 // Speed identifiers
 var MOVE_SPEED = -250;
-const JUMP_FORCE = 700;
+const JUMP_FORCE = 735;
 const BIG_JUMP_FORCE = 2000;
 let CURRENT_JUMP_FORCE = JUMP_FORCE;
 const FALL_DEATH = 400;
@@ -22,11 +22,12 @@ const HEIGHT = 600;
 //Game logic
 loadSprite('ground', 'sprites/ground-dead.png');
 loadSprite('bot', 'sprites/bot2.png');
-loadSprite('enemy', 'sprites/enemy.jpeg');
+loadSprite('enemy', 'sprites/garbage.png');
 loadSprite('layer1', 'sprites/layer 1.png')
 loadSprite('layer2', 'sprites/layer 2.png')
 loadSprite('layer3', 'sprites/layer 3.png')
-loadSprite('layer4', 'sprites/layer 4.png')
+loadSprite('layer4', 'sprites/dystopia.png')
+loadSprite('layer5', 'sprites/ground.png')
 
 
 /**
@@ -92,7 +93,8 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
 
   //addLevel(MAPS[levelId], levelCfg);
   const level = addLevel(MAPS[levelId ?? 0], levelCfg);
-
+  
+  //adding parallax background elements
   add([
     layer('bg'),
     sprite('layer1'),
@@ -101,11 +103,12 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
   ]);
 
   add([
-    layer('bg'),
+    layer('bg2'),
     sprite('layer2'),
-    pos(500,600),
+    pos(1300,600),
     origin('bot'),
-  ]);
+    move(LEFT, 10),
+  ])
   
   loop(3, () =>{
     add([
@@ -113,17 +116,26 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
       sprite('layer3'),
       pos(500,600),
       origin('bot'),
-      move(LEFT, 100)
+      move(LEFT, 100),
     ])
   })
-  
+
   add([
     layer('bg3'),
     sprite('layer4'),
+    pos(1300,600),
+    origin('bot'),
+    move(LEFT, 30),
+  ])
+
+  add([
+    layer('bg'),
+    sprite('layer5'),
     pos(500,600),
     origin('bot'),
-  ]);
-
+  ])
+  
+  //adding player
   const player = add([
     health(3),
     sprite('bot'),
@@ -222,12 +234,11 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
 
   function addObsticle() {
     const enemy = add([
-      sprite('bot'),
+      sprite('enemy'),
       solid(),
       area(),
       pos(1100, 300),
       body(),
-      scale(0.5),
       origin('center'),
       cleanup(3),
       "enemy",
