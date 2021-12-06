@@ -23,6 +23,10 @@ const HEIGHT = 600;
 loadSprite('ground', 'sprites/ground-dead.png');
 loadSprite('bot', 'sprites/bot2.png');
 loadSprite('enemy', 'sprites/enemy.jpeg');
+loadSprite('layer1', 'sprites/layer 1.png')
+loadSprite('layer2', 'sprites/layer 2.png')
+loadSprite('layer3', 'sprites/layer 3.png')
+loadSprite('layer4', 'sprites/layer 4.png')
 
 
 /**
@@ -84,11 +88,41 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
       solid()],
   };
 
-  layers(['bg', 'obj', 'ui'], 'obj');
+  layers(['bg', 'bg2', 'bg3', 'obj', 'ui'], 'obj');
 
   //addLevel(MAPS[levelId], levelCfg);
   const level = addLevel(MAPS[levelId ?? 0], levelCfg);
 
+  add([
+    layer('bg'),
+    sprite('layer1'),
+    pos(500,600),
+    origin('bot'),
+  ]);
+
+  add([
+    layer('bg'),
+    sprite('layer2'),
+    pos(500,600),
+    origin('bot'),
+  ]);
+  
+  loop(3, () =>{
+    add([
+      layer('bg2'),
+      sprite('layer3'),
+      pos(500,600),
+      origin('bot'),
+      move(LEFT, 100)
+    ])
+  })
+  
+  add([
+    layer('bg3'),
+    sprite('layer4'),
+    pos(500,600),
+    origin('bot'),
+  ]);
 
   const player = add([
     health(3),
