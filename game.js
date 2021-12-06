@@ -93,7 +93,7 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
 
   //addLevel(MAPS[levelId], levelCfg);
   const level = addLevel(MAPS[levelId ?? 0], levelCfg);
-  
+
   //adding parallax background elements
   add([
     layer('bg'),
@@ -109,7 +109,7 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
     origin('bot'),
     move(LEFT, 10),
   ])
-  
+
   loop(5, () =>{
     add([
       layer('bg2'),
@@ -134,7 +134,7 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
     pos(500,600),
     origin('bot'),
   ])
-  
+
   //adding player
   const player = add([
     health(3),
@@ -183,6 +183,19 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
     if (player.grounded()) {
       player.jump(CURRENT_JUMP_FORCE);
     }
+  });
+
+  //pause key
+    keyDown('escape', () => {
+    debug.paused = true;
+    music.pause();
+  });
+
+  //unpause key
+  keyDown('space', () => {
+    debug.paused = false;
+    music.play();
+    time() == time() - time().paused;
   });
 
   /**
@@ -294,7 +307,7 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
   }
 
   music.play();
-  
+
   document.getElementById("music").volume = 0.5;
   document.getElementById("damage").volume = 0.8;
   document.getElementById("victor").volume = 0.5;
