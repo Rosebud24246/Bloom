@@ -29,6 +29,9 @@ loadSprite('layer2', 'sprites/layer 2.png');
 loadSprite('layer3', 'sprites/layer 3.png');
 loadSprite('layer4', 'sprites/dystopia.png');
 loadSprite('layer5', 'sprites/ground.png');
+loadSprite('bgRestart', "sprites/blackRestart.png");
+loadSprite('bgWin', "sprites/blackWin.png");
+loadSprite('bgStart', "sprites/blackTitleFlower.png");
 
 loadSpriteAtlas("sprites/botSheetAttempt2.png", {
   "bot": {
@@ -48,7 +51,7 @@ loadSpriteAtlas("sprites/botSheetAttempt2.png", {
   const player = add([
   sprite("hero"),
   ])
-  
+
 player.play("run") */
 
 
@@ -174,7 +177,7 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
   player.onGround(() => {
     player.play('run');
   });
-  
+
 
   player.action(() => {
     if (player.pos.y >= 1000) {
@@ -372,35 +375,46 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
   */
 scene('lose', () => {
   MOVE_SPEED = -250;
-  add([text("You Lose...")])
+  add([
+    sprite('bgRestart', {width: 350, height: 300}),
+     pos(center().add(0, 100)),
+     scale(3),
+      origin("center"),
+    ]);
+
   music.pause();
   document.getElementById("music").currentTime = 0;
 
   //restart button
-  addButton("Restart", vec2(500, 200), () => go("game"));
+  addButton("Restart", vec2(500, 100), () => go("game"));
 });
 
 scene('win', () => {
   MOVE_SPEED = -250;
-  add([text("YOU WIN!!!")])
+  add([
+    sprite('bgWin', {width: 350, height: 300}),
+     pos(center().add(0, 100)),
+     scale(3),
+      origin("center"),
+    ]);
   music.pause();
   document.getElementById("music").currentTime = 0;
   victor.play();
 
   //restart button
-  addButton("Restart", vec2(500, 200), () => go("game"));
+  addButton("Restart", vec2(500, 100), () => go("game"));
 });
 
 //start screen
 scene('start', () => {
   MOVE_SPEED = -250;
 	add([
-		text("B100M"),
-		pos(center().add(0, 100)),
-		scale(3),
-		origin("center")
+  sprite('bgStart', {width: 350, height: 300}),
+	 pos(center().add(0, 100)),
+	 scale(3),
+		origin("center"),
   ]);
-  addButton("Start", vec2(500, 200), () => go("game"));
+  addButton("Start", vec2(500, 100), () => go("game"));
 
 })
 
