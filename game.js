@@ -337,7 +337,7 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
 
   music.play();
 
-  document.getElementById("music").volume = 0.5;
+  document.getElementById("music").volume = 0.2;
   document.getElementById("damage").volume = 0.8;
   document.getElementById("victor").volume = 0.5;
   victor.pause();
