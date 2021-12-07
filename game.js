@@ -21,14 +21,35 @@ const HEIGHT = 600;
 
 //Game logic
 loadSprite('ground', 'sprites/ground-dead.png');
-loadSprite('bot', 'sprites/bot2.png');
+//loadSprite('bot', 'sprites/bot2.png');
 loadSprite('enemy', 'sprites/garbage.png');
 loadSprite('enemyFlip', 'sprites/garbageFlip.png');
-loadSprite('layer1', 'sprites/layer 1.png')
-loadSprite('layer2', 'sprites/layer 2.png')
-loadSprite('layer3', 'sprites/layer 3.png')
-loadSprite('layer4', 'sprites/dystopia.png')
-loadSprite('layer5', 'sprites/ground.png')
+loadSprite('layer1', 'sprites/layer 1.png');
+loadSprite('layer2', 'sprites/layer 2.png');
+loadSprite('layer3', 'sprites/layer 3.png');
+loadSprite('layer4', 'sprites/dystopia.png');
+loadSprite('layer5', 'sprites/ground.png');
+
+loadSpriteAtlas("sprites/botSheetAttempt2.png", {
+  "bot": {
+    x: 0,
+    y: 0,
+    width: 640,
+    height: 116,
+    sliceX: 10,
+    anims: {
+      'idle': { from: 0, to: 4, speed: 1, loop: true, pingpong: true, },
+      'run': { from: 5, to: 7, speed: 7, loop: true, pingpong: true, },
+      'jump': { from: 8, to: 9, speed: 4, loop: true, pingpong: true},
+    },
+  },
+});
+  /*
+  const player = add([
+  sprite("hero"),
+  ])
+  
+player.play("run") */
 
 
 /**
@@ -150,6 +171,11 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
     origin('bot')
   ]);
 
+  player.onGround(() => {
+    player.play('run');
+  });
+  
+
   player.action(() => {
     if (player.pos.y >= 1000) {
       go('lose');
@@ -186,6 +212,7 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
   keyDown('space', () => {
     if (player.grounded()) {
       player.jump(CURRENT_JUMP_FORCE);
+      player.play('jump');
     }
   });
 
@@ -202,11 +229,6 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
       timeStart += time() - pauseOffset;
       music.play();
     }
-  });
-
-  //unpause key
-  keyDown('space', () => {
-    
   });
 
   /**
@@ -246,8 +268,8 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
     if (isPaused == false) {
       value = time() - timeStart;
     }
-    console.log(timeStart);
-    debug.log(value + " " + time());
+    //console.log(timeStart);
+    //debug.log(value + " " + time());
     if (value/WIN_TIME > 1) {
       go('win');
     }
