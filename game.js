@@ -23,6 +23,7 @@ const HEIGHT = 600;
 loadSprite('ground', 'sprites/ground-dead.png');
 loadSprite('bot', 'sprites/bot2.png');
 loadSprite('enemy', 'sprites/garbage.png');
+loadSprite('enemyFlip', 'sprites/garbageFlip.png');
 loadSprite('layer1', 'sprites/layer 1.png')
 loadSprite('layer2', 'sprites/layer 2.png')
 loadSprite('layer3', 'sprites/layer 3.png')
@@ -100,6 +101,7 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
   add([
     layer('bg'),
     sprite('layer1'),
+    scale(1.5),
     pos(500,600),
     origin('bot'),
   ]);
@@ -244,8 +246,8 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
     if (isPaused == false) {
       value = time() - timeStart;
     }
-    //console.log(timeStart);
-    //debug.log(value + " " + time());
+    console.log(timeStart);
+    debug.log(value + " " + time());
     if (value/WIN_TIME > 1) {
       go('win');
     }
@@ -257,14 +259,29 @@ scene("game", ({ levelId, score } = {levelId: 0, score: 0}) => {
   var topNum = 3;
   var bottomNum = 1;
 
+  function flipped() {
+    let flip = Math.floor(Math.random() * 2);
+    if (flip == 0) {
+      return 'enemy';
+    } else {
+      return 'enemyFlip';
+    }
+  }
+
+  function sizeRand() {
+    let size = (Math.random() * 0.75) + .5;
+    return size;
+  }
+
   function addObsticle() {
     const enemy = add([
-      sprite('enemy'),
+      sprite(flipped()),
       solid(),
       area(),
-      pos(1100, 300),
+      scale(sizeRand()),
+      pos(1300, 300),
       body(),
-      origin('center'),
+      origin('bot'),
       cleanup(3),
       "enemy",
     ]);
